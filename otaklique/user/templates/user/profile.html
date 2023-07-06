@@ -1,0 +1,297 @@
+{%load static%}
+{%load crispy_forms_tags%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="title" content="project">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="language" content="English">
+	<meta name="author" content="otaklique">
+
+<title>
+	Profile
+</title>
+
+<!-- bootstrap file -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!--css file-->
+<link rel='stylesheet' type='text/css' href="{% static 'user/css/profile.css'%}">
+
+<link href="{% static 'user/css/cropper.min.css' %}" rel="stylesheet">
+
+{% if messages %}
+{% for message in messages %}
+
+<script>
+	alert('{{message}}')
+</script>
+
+{% endfor %}
+{% endif %}
+
+</head>
+<body class="container-fluid">
+	<header class="row">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+          			<button class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+          			</button>
+          			<a class="navbar-brand" class="styleheader" href="{%url "index" %}">OTAKLIQUE</a>
+        		</div>
+        		<div class="collapse navbar-collapse" id="mainNavBar">
+          			<ul class="nav navbar-nav navbar-right">
+            			<li>
+            				<a href="{% url "index" %}">Home</a>
+            			</li>
+
+                    	<li class='disabled'>
+                      		<a href="{% url "profile" %}">Profile</a>
+                    	</li>
+
+              			<li>
+              				<a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a>
+              			</li>
+                    </ul>
+        		</div>
+      		</div>
+    	</nav>
+  	</header>
+  <script src="{% static 'user/js/jquery-3.1.1.min.js' %}"></script>
+  <script src="{% static 'user/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'user/js/cropper.min.js' %}"></script>
+  <script>
+      $(function () {
+        $("#id_profile_image").change(function () {
+        if (this.files && this.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $("#image").attr("src", e.target.result);
+            $("#modalCrop").modal("show");
+          }
+          reader.readAsDataURL(this.files[0]);
+        }
+      });
+
+      var $image = $("#image");
+      var cropBoxData;
+      var canvasData;
+      $("#modalCrop").on("shown.bs.modal", function () {
+        $image.cropper({
+          viewMode: 1,
+          aspectRatio: 1/1,
+          minCropBoxWidth: 200,
+          minCropBoxHeight: 200,
+          ready: function () {
+            $image.cropper("setCanvasData", canvasData);
+            $image.cropper("setCropBoxData", cropBoxData);
+          }
+        });
+      }).on("hidden.bs.modal", function () {
+        cropBoxData = $image.cropper("getCropBoxData");
+        canvasData = $image.cropper("getCanvasData");
+        $image.cropper("destroy");
+      });
+
+      $(".js-zoom-in").click(function () {
+        $image.cropper("zoom", 0.1);
+      });
+
+      $(".js-zoom-out").click(function () {
+        $image.cropper("zoom", -0.1);
+      });
+
+      $(".js-crop-and-upload").click(function () {
+        var cropData = $image.cropper("getData");
+        $("#id_x").val(cropData["x"]);
+        $("#id_y").val(cropData["y"]);
+        $("#id_height").val(cropData["height"]);
+        $("#id_width").val(cropData["width"]);
+        $("#p_formUpload").submit();
+      });
+
+    });
+    </script>
+        <script>
+      $(function () {
+        $("#id_cover_image").change(function () {
+        if (this.files && this.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $("#c-image").attr("src", e.target.result);
+            $("#c-modalCrop").modal("show");
+          }
+          reader.readAsDataURL(this.files[0]);
+        }
+      });
+
+      var $image = $("#c-image");
+      var cropBoxData;
+      var canvasData;
+      $("#c-modalCrop").on("shown.bs.modal", function () {
+        $image.cropper({
+          viewMode: 1,
+          aspectRatio: 11/4,
+          minCropBoxWidth: 1100,
+          minCropBoxHeight: 400,
+          ready: function () {
+            $image.cropper("setCanvasData", canvasData);
+            $image.cropper("setCropBoxData", cropBoxData);
+          }
+        });
+      }).on("hidden.bs.modal", function () {
+        cropBoxData = $image.cropper("getCropBoxData");
+        canvasData = $image.cropper("getCanvasData");
+        $image.cropper("destroy");
+      });
+
+      $(".c-js-zoom-in").click(function () {
+        $image.cropper("zoom", 0.1);
+      });
+
+      $(".c-js-zoom-out").click(function () {
+        $image.cropper("zoom", -0.1);
+      });
+
+      $(".c-js-crop-and-upload").click(function () {
+        var cropData = $image.cropper("getData");
+        $("#id_x").val(cropData["x"]);
+        $("#id_y").val(cropData["y"]);
+        $("#id_height").val(cropData["height"]);
+        $("#id_width").val(cropData["width"]);
+        $("#c_formUpload").submit();
+      });
+
+    });
+    </script>
+    
+    
+    <script>
+    $(document).ready(function(){
+      $("#myBtn").click(function(){
+      $("#myModal").modal();
+      });
+    });
+    </script>
+<!----------------------------------------MAIN----------------------------------------------------->
+  <div class = 'container'>
+    <div class = 'col-md-12' style = 'background-color: white;padding-top: 20px;padding-bottom: 20px;padding-left: 20px; padding-right: 20px; margin-top: 6%'>
+      <div class = 'parent'>
+        <center>
+        <img class = 'cover-image' src = "{{ user.coverpicture.cover_image.url }}">
+        </center>
+      <img class = 'rounded-circle account-img' src = "{{ user.profilepicture.profile_image.url }}">
+      <input type = 'image' class = 'profileedit' id = 'myBtn' src = "{% static 'user/images/camera_lens.png' %}">
+    </div>
+<!--------------------------------Profile Edit Model------------------------------------------------>
+    <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Profile Picture</h4>
+        </div>
+        <div class="modal-body">
+          <form method="POST" enctype="multipart/form-data" id="p_formUpload">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <p>
+           {{ p_form|crispy }}
+            </p>
+        </fieldset>
+      </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div> 
+    </div>
+  </div>
+<!------------------------------------------------------------------------------------------------->
+  <br>
+      <form method="POST" enctype="multipart/form-data" id="c_formUpload">
+        {% csrf_token %}
+        <fieldset class="form-group">
+         <legend class="border-bottom mb-4">Cover Picture</legend>
+            <p>
+           {{ c_form|crispy }}
+            </p>
+        </fieldset>
+      </form>
+    </div>
+<!----------------------Crop Model Box for Profile Photo-------------------------------------->
+    <div class="modal fade" id="modalCrop">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Crop the photo</h4>
+        </div>
+        <div class="modal-body">
+          <img src="" id="image" style="max-width: 100%;">
+        </div>
+        <div class="modal-footer">
+          <div class="btn-group pull-left" role="group">
+            <button type="button" class="btn btn-default js-zoom-in">
+              <span class="glyphicon glyphicon-zoom-in"></span>
+            </button>
+            <button type="button" class="btn btn-default js-zoom-out">
+              <span class="glyphicon glyphicon-zoom-out"></span>
+            </button>
+          </div>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Nevermind</button>
+          <button type="button" class="btn btn-primary js-crop-and-upload">Crop and upload</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!--------------------------------------------------------------------------------------------->
+<!-----------------------Crop Model Box for Cover Photo---------------------------------------->
+  <div class="modal fade" id="c-modalCrop">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Crop the photo</h4>
+        </div>
+        <div class="modal-body">
+          <img src="" id="c-image" style="max-width: 100%;">
+        </div>
+        <div class="modal-footer">
+          <div class="btn-group pull-left" role="group">
+            <button type="button" class="btn btn-default c-js-zoom-in">
+              <span class="glyphicon glyphicon-zoom-in"></span>
+            </button>
+            <button type="button" class="btn btn-default c-js-zoom-out">
+              <span class="glyphicon glyphicon-zoom-out"></span>
+            </button>
+          </div>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Nevermind</button>
+          <button type="button" class="btn btn-primary c-js-crop-and-upload">Crop and upload</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!----------------------------------------------------------------------------------------------->
+  </div>
+</body>
+</html>

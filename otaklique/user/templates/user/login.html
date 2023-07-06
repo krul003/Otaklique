@@ -1,0 +1,126 @@
+{%load static%}
+{%load crispy_forms_tags%}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="title" content="project">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="language" content="English">
+	<meta name="author" content="otaklique">
+
+<title>
+	Log In
+</title>
+
+<!-- bootstrap file-->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<link rel='stylesheet' type='text/css' href="{% static 'user/css/login.css'%}">
+
+{% if messages %}
+{% for message in messages %}
+
+<script>
+	alert('{{message}}')
+</script>
+
+{% endfor %}
+{% endif %}
+
+</head>
+<body class="container-fluid">
+	<header class="row">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+          			<button class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+            			<span class="icon-bar"></span>
+          			</button>
+          			<a class="navbar-brand" class="styleheader" href="{%url "index" %}">OTAKLIQUE</a>
+        		</div>
+        		<div class="collapse navbar-collapse" id="mainNavBar">
+          			<ul class="nav navbar-nav navbar-right">
+            			<li>
+            				<a href="{% url "index" %}">Home</a>
+            			</li>
+            			{% if user.is_authenticated %}
+              			<li>
+              				<a href="{% url "logout" %}"><span class="glyphicon glyphicon-log-out"></span> &nbsp; Logout</a>
+              			</li>
+                  {%else%}
+                  	<li>
+                      <a href="{% url "register" %}"><span class="glyphicon glyphicon-user"></span> &nbsp; Signup</a>
+                    </li>
+                    <li class='disabled'>
+                      <a href="{% url "login" %}"><span class="glyphicon glyphicon-log-in"></span> &nbsp; Login</a>
+                    </li>
+            			{% endif %}
+          			</ul>
+        		</div>
+      		</div>
+    	</nav>
+  	</header>
+  	<br>
+  	<div class='container'>
+  		<div class='row'>
+  			<div class='col-md-5 col-md-offset-7 col-xs-12 col-sm-12'>
+  				<div class='form-box'>
+  					<form action= '#' method= 'post' class='input-group'>
+              {% csrf_token %}
+              {{form.as_p}}
+              <br>
+              <br>
+  						<input type='checkbox' class='check-box' value="lsRememberMe" id="rememberMe"><span class='rp'>Remember Me</span>
+  						<br>
+              <script type="text/javascript">
+                const rmCheck = document.getElementById("rememberMe"),
+                usInput = document.getElementById("username");
+                if (localStorage.checkbox && localStorage.checkbox !== "") {  
+                    rmCheck.setAttribute("checked", "checked");
+                    usInput.value = localStorage.username;
+                } else {
+                    rmCheck.removeAttribute("checked");
+                    usInput.value = "";
+                }
+
+                function lsRememberMe() {
+                    if (rmCheck.checked && usInput.value !== "") {
+                        localStorage.username = usInput.value;
+                        localStorage.checkbox = rmCheck.value;
+                    } else {
+                        localStorage.username = "";
+                        localStorage.checkbox = "";
+                    }
+                }
+              </script>
+  						<br>
+  						<button type='submit' class='submit-btn' onclick="lsRememberMe()">Log in</button>
+  						<br>
+              <br>
+  						<center>
+  						<a href="{% url "register"%}" class='link'>Don't have an account,Sign up</a>
+  						</center>
+  					</form>
+  				</div>
+  			</div>
+        <div class = 'col-sm-5 col-sm-offset-7'>
+        </div>
+  		</div>
+  	</div>
+</body>
+
+</html>

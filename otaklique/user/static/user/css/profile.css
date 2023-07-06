@@ -1,0 +1,43 @@
+*{
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+}
+
+body{
+	background-image: url("../../user/images/background10.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.parent{
+	position: relative;
+	top: 0px;
+	left: 0px;
+}
+
+.cover-image{
+	position: relative;
+	top: 0px;
+	left: 0px;
+}
+.rounded-circle {
+	width: 200px;
+	height: 200px;
+  	border-radius: 50%;
+  	position: absolute;
+  	top: 55%;
+  	left: 40%;
+  	border: 6px solid white;
+}
+
+.profileedit{
+	width: 45px;
+	height: 45px;
+	border-radius: 50%;
+	position: absolute;
+	top: 92%;
+	left: 53%;
+	background-color: white;
+}
